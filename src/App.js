@@ -72,7 +72,7 @@ class App extends Component {
     const Tracts = this.state.tracts.map(tract => (
       <Polygon positions={tract.tract.bounding_rect} key={tract.tract.name}>
         <Popup>
-          <span>I AM A TRACT!</span>
+          <span>{tract.tract.name}</span>
         </Popup>
       </Polygon>
     ));
@@ -83,11 +83,6 @@ class App extends Component {
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url={mapboxURL}
           />
-          <Marker position={position}>
-            <Popup>
-              <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-            </Popup>
-          </Marker>
           {Markers}
           {Tracts}
         </Map>
