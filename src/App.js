@@ -6,6 +6,8 @@ import { MAPBOX_KEY } from "./mapboxkey.js";
 import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
+import magnification from '../assets/Magnification.png';
+
 class App extends Component {
   constructor() {
     super();
@@ -48,12 +50,26 @@ class App extends Component {
           </Polygon>
         </Map>
         <div className="panels">
-          <Geosuggest
-            onSuggestSelect={this.onSuggestSelect.bind(this)}
-            location={new google.maps.LatLng(41.498321, -81.696316)}
-            radius="20"
-          />
+          <SearchBox onSuggestSelect={this.onSuggestSelect.bind(this)}/>
         </div>
+      </div>
+    )
+  }
+}
+
+class SearchBox extends Component {
+  render() {
+    return (
+      <div className="search">
+        <div className="icon-container">
+          <img src={magnification}/>
+        </div>
+        <Geosuggest
+          onSuggestSelect={this.props.onSuggestSelect}
+          placeholder="What areas do you like?"
+          location={new google.maps.LatLng(41.498321, -81.696316)}
+          radius="20"
+        />
       </div>
     )
   }

@@ -30,12 +30,57 @@
 .panels {
   position: absolute;
   z-index: 2;
+  width: 392px;
+  margin: 15px;
+}
+
+.search {
+  background-color: white;
+  padding: 12px 15px 11px 52px;
+  box-shadow: 0px 2px 4px rgba(0,0,0,.18);
+}
+
+.search > * {
+  display: inline-block;
+}
+
+.search .icon-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 17px 15px 13px 15px;
+}
+
+.search input {
+  font-size: 15px;
+  border: none;
+  width: 100%;
+  padding: 0px;
+  height: 24px;
+}
+
+.search input::placeholder {
+  color: #B2B2B2;
+}
+
+.search textarea:focus, .search input:focus{
+    outline: none;
+}
+
+.geosuggest {
+  width: 100%;
+}
+
+.geosuggest__suggests {
+  list-style: none;
+  padding-left: 0px;
 }
 
 .geosuggest__suggests--hidden {
   max-height: 0;
   overflow: hidden;
   border-width: 0;
+  margin: 0px
 }
 
 .geosuggest__item--active {
