@@ -18,6 +18,30 @@
   font-size: large;
 }
 
+.app-root {
+  position: relative;
+}
+
+.map {
+  position: absolute;
+  z-index: 1;
+}
+
+.panels {
+  position: absolute;
+  z-index: 2;
+}
+
+.geosuggest__suggests--hidden {
+  max-height: 0;
+  overflow: hidden;
+  border-width: 0;
+}
+
+.geosuggest__item--active {
+
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

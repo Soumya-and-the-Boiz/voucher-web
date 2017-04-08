@@ -1,8 +1,10 @@
+/* global google */
+
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import logo from './logo.svg';
-import { MAPBOX_KEY } from "./mapboxkey.js"
-import './App.css';
+import { MAPBOX_KEY } from "./mapboxkey.js";
+import '../css/App.css';
+import Geosuggest from 'react-geosuggest';
 
 class App extends Component {
   constructor() {
@@ -37,6 +39,15 @@ class App extends Component {
     }
   }
 
+  onSuggestSelect(suggest) {
+    console.log(suggest);
+    this.setState({
+      lat: suggest.location.lat,
+      lng: suggest.location.lng,
+      zoom: 16
+    });
+  }
+
   render () {
     const position = [this.state.lat, this.state.lng]
     const mapboxURL = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + MAPBOX_KEY
@@ -55,14 +66,28 @@ class App extends Component {
       </Polygon>
     ));
     return (
-      <Map center={position} onClick={this.addMarker.bind(this)} zoom={this.state.zoom}>
-        <TileLayer
-          attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url={mapboxURL}
-        />
-        {Markers}
-        {Tracts}
-      </Map>
+      <div className="app-root">
+        <Map className="map" onClick={this.addMarker.bind(this)} center={position} zoom={this.state.zoom}>
+          <TileLayer
+            attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url={mapboxURL}
+          />
+          <Marker position={position}>
+            <Popup>
+              <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+            </Popup>
+          </Marker>
+          {Markers}
+          {Tracts}
+        </Map>
+        <div className="panels">
+          <Geosuggest
+            onSuggestSelect={this.onSuggestSelect.bind(this)}
+            location={new google.maps.LatLng(41.498321, -81.696316)}
+            radius="20"
+          />
+        </div>
+      </div>
     )
   }
 }
