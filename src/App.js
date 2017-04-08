@@ -104,7 +104,7 @@ class App extends Component {
     const Markers = this.state.markers.map(marker => (
       <Marker position={[marker.lat, marker.lng]} key = {marker.key}>
         <Popup>
-          <button onClick={this.deleteMarker.bind(this, marker)} type="button">Delete!</button>
+          <button onClick={this.deleteMarker.bind(this, marker)} type="button">Delete</button>
         </Popup>
       </Marker>
     ));
