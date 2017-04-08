@@ -30,6 +30,7 @@ class App extends Component {
   }
 
   addMarker(data) {
+    console.log(data);
     var oldMarkers = this.state.markers
     if(oldMarkers.length==0) {
       data.latlng.key = 0;
@@ -64,7 +65,13 @@ class App extends Component {
   }
 
   onSuggestSelect(suggest) {
-    console.log(suggest);
+    const data = {
+      latlng: {
+        lat: suggest.location.lat,
+        lng: suggest.location.lng
+      }
+    }
+    this.addMarker(data);
     this.setState({
       lat: suggest.location.lat,
       lng: suggest.location.lng,
