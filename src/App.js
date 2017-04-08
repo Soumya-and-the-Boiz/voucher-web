@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import logo from './logo.svg';
 import { MAPBOX_KEY } from "./mapboxkey.js"
 import './App.css';
@@ -13,8 +13,8 @@ class App extends Component {
   }
 
   render () {
-    console.log(MAPBOX_KEY)
     const position = [this.state.lat, this.state.lng]
+    const positions = [[41.467714, -81.759736], [41.467195, -81.758724], [41.465218, -81.758711], [41.465238, -81.758649], [41.466693, -81.754202], [41.467728, -81.751035], [41.468388, -81.749038], [41.468464, -81.748835], [41.469226, -81.746722], [41.47009, -81.745592], [41.470056, -81.751034], [41.47046, -81.748568], [41.472142, -81.748559], [41.473252, -81.748558], [41.477114, -81.748543], [41.477103, -81.750968], [41.477066, -81.754133], [41.47043, -81.754186], [41.470107, -81.75286], [41.469819, -81.752498], [41.46878, -81.755502], [41.467997, -81.758053], [41.467714, -81.759736]]
     const mapboxURL = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + MAPBOX_KEY
     return (
       <Map center={position} zoom={this.state.zoom}>
@@ -22,24 +22,14 @@ class App extends Component {
           attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url={mapboxURL}
         />
-        <Marker position={position}>
+        <Polygon positions={positions}>
           <Popup>
-            <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+            <span>I am a tract! Check my sexy body out!</span>
           </Popup>
-        </Marker>
+        </Polygon>
       </Map>
     )
   }
-/*
-
-https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{level}/{col}/{row}@2x?access_token=pk.eyJ1IjoiZ2NjYWxkd2VsbCIsImEiOiJjajE4YzkyZ2kwNm93MzJvN2Rqa3M2djB6In0.ld3nbtPiF2xzW863YOt2QQ
-
-url='https://api.tiles.mapbox.com/v4/mapbox/streets-v10/tiles/256/{z}/{x}/{y}.png?access_token=' + MAPBOX_KEY
-attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
-maxZoom: 18
-id: 'mapbox/streets-v10/tiles/256'
-accessToken: MAPBOX_KEY
-*/
 }
 
 export default App;
