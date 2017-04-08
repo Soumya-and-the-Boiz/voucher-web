@@ -39,13 +39,20 @@ class App extends Component {
     console.log(this.state)
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
-    fetch(`http://127.0.0.1:5000/`)
-            .then(response => response.json())
-            .then((responseJson) => {
-              console.log(responseJson);
-              this.setState({tracts:responseJson});
-              console.log(this.state);
-            });
+    console.log(JSON.stringify(this.state.markers))
+    fetch(`http://127.0.0.1:5000/`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.markers)
+    }).then(response => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        this.setState({tracts:responseJson});
+        console.log(this.state);
+      });
   }
 
   deleteMarker(marker) {
