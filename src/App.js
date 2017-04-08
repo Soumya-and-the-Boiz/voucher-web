@@ -98,7 +98,7 @@ class App extends Component {
       </Marker>
     ));
     const Tracts = this.state.tracts.map(tract => (
-      <Polygon positions={tract.tract.bounding_rect} key={tract.tract.name}>
+      <Polygon positions={JSON.parse(tract.tract.bounding_rect)} key={tract.tract.name}>
         <Popup>
           <span>{tract.tract.name}</span>
         </Popup>
