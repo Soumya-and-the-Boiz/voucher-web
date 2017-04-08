@@ -7,6 +7,10 @@ import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
 import magnification from '../assets/Magnification.png';
+import connectivity from '../assets/Connectivity.png';
+import education from '../assets/Education.png';
+import transportation from '../assets/Transportation.png';
+import wellness from '../assets/Wellness.png';
 
 class App extends Component {
   constructor() {
@@ -167,21 +171,41 @@ class Result extends Component {
   render() {
     return (
       <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
-        <img width='80' height='92' src={this.props.img_src}/>
+        <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
           <div className="stats">
-            <div>
-              Transportation: {this.scoreToRating(this.props.transportation)}
+            <div className="stat">
+              <div className="icon">
+                <img className="icon-image" src={transportation}/>
+              </div>
+              <div className="ranking">
+                {this.scoreToRating(this.props.transportation)}
+              </div>
             </div>
-            <div>
-              Education: {this.scoreToRating(this.props.education)}
+            <div className="stat">
+              <div className="icon">
+                <img className="icon-image" src={education}/>
+              </div>
+              <div className="ranking">
+                {this.scoreToRating(this.props.education)}
+              </div>
             </div>
-            <div>
-              Wellness: {this.scoreToRating(this.props.wellness)}
+            <div className="stat">
+              <div className="icon">
+                <img className="icon-image" src={wellness}/>
+              </div>
+              <div className="ranking">
+                {this.scoreToRating(this.props.wellness)}
+              </div>
             </div>
-            <div>
-              Connectivity: {this.scoreToRating(this.props.connectivity)}
+            <div className="stat">
+              <div className="icon">
+                <img className="icon-image" src={connectivity}/>
+              </div>
+              <div className="ranking">
+                {this.scoreToRating(this.props.connectivity)}
+              </div>
             </div>
           </div>
         </div>

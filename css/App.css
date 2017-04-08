@@ -109,25 +109,47 @@
 
 .result {
   padding: 10px;
-  align-items: center;
+  align-items: initial;
   display: flex;
   border-bottom: #e6e6e6;
   border-bottom-width: 1px;
   border-style: none none solid none;
 }
 
-.result img {
+.result .big-picture {
   margin-right: 15px;
+}
+
+.result .icon-image {
+  height: 15px;
+}
+
+.stat .icon {
+  width: 20px;
+  display: inline-block;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.stat .ranking {
+  display: inline-block;
+}
+
+.results .stats .stat {
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
 }
 
 .result .tract-name {
   font-size: 15px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .result .stats {
   font-size: 13px;
   color: #8C8C8C;
+  display: flex;
 }
 
 .result > * {
