@@ -74,6 +74,17 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
+    fetch(`http://127.0.0.1:5000/`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.markers)
+    }).then(response => response.json())
+      .then((responseJson) => {
+        this.setState({tracts:responseJson});
+      });
   }
 
   onSuggestSelect(suggest) {
