@@ -1,32 +1,40 @@
+/* global google */
+
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import logo from './logo.svg';
-import './App.css';
+import { MAPBOX_KEY } from "./mapboxkey.js";
+import '../css/App.css';
+import Geosuggest from 'react-geosuggest';
 
 class App extends Component {
-  state = {
-    lat: 41.487007,
-    lng: -81.504302,
-    zoom: 13,
+  constructor() {
+    super();
+    this.state = {
+      lat: 41.498545,
+      lng: -81.689281,
+      zoom: 13,
+    }
   }
 
-/*
-url='https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
-attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
-maxZoom: 18
-id: 'mapbox/streets-v10/tiles/256'
-accessToken: MAPBOX_KEY
-*/
-
+  onSuggestSelect(suggest) {
+    console.log(suggest);
+    this.setState({
+      lat: suggest.location.lat,
+      lng: suggest.location.lng,
+      zoom: 16
+    });
+  }
 
   render () {
+    console.log(MAPBOX_KEY)
     const position = [this.state.lat, this.state.lng]
+    const mapboxURL = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + MAPBOX_KEY
     return (
       <div className="app-root">
         <Map className="map" center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            url={mapboxURL}
           />
           <Marker position={position}>
             <Popup>
@@ -34,7 +42,13 @@ accessToken: MAPBOX_KEY
             </Popup>
           </Marker>
         </Map>
-        <div className="panels">MOSMDFOASDMFAOSDMFASODFMASDOF</div>
+        <div className="panels">
+          <Geosuggest
+            onSuggestSelect={this.onSuggestSelect.bind(this)}
+            location={new google.maps.LatLng(41.498321, -81.696316)}
+            radius="20"
+          />
+        </div>
       </div>
     )
   }
