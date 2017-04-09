@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import { MAPBOX_KEY } from "./mapboxkey.js";
+import { GOOGLE_KEY } from "./googlekey.js";
 import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
@@ -153,6 +154,13 @@ class SearchBox extends Component {
 }
 
 class Result extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: ''
+    }
+  }
+
   scoreToRating(score) {
     var range = Math.floor(Number(score) / 100)
     if (range == 0) {
@@ -169,12 +177,24 @@ class Result extends Component {
     }
   }
 
+  getName(lat, lng) {
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + GOOGLE_KEY)
+      .then(response => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.results[0].address_components[2].long_name)
+        this.setState({
+          name: responseJson.results[0].address_components[2].long_name
+        });
+      });
+  }
+
   render() {
+    this.getName(this.props.center_lat, this.props.center_lng)
     return (
       <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
-          <div className="tract-name">{this.props.name}</div>
+          <div className="tract-name">{this.state.name}</div>
           <div className="stats">
             <div className="stat">
               <div className="icon">
