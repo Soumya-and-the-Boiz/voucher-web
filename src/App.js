@@ -33,6 +33,33 @@ class App extends Component {
     });
   }
 
+  getName(lat, lng, index) {
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + GOOGLE_KEY)
+      .then(response => response.json())
+      .then((responseJson) => {
+        let tracts = this.state.tracts
+        tracts[index].tract.name = responseJson.results[0].address_components[2].long_name
+        this.setState({
+          tracts: tracts
+        });
+      });
+  }
+
+  fetchResultsForMarkers(markers) {
+    fetch(`http://127.0.0.1:5000/`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(markers)
+    }).then(response => response.json())
+      .then((responseJson) => {
+        this.setState({tracts:responseJson});
+        this.state.tracts.map((tract, index) => this.getName(tract.tract.center_lat, tract.tract.center_lng, index))
+      });
+  }
+
   addMarker(data) {
     var oldMarkers = this.state.markers
     if(oldMarkers.length==0) {
@@ -42,17 +69,7 @@ class App extends Component {
     }
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
-    fetch(`http://127.0.0.1:5000/`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.state.markers)
-    }).then(response => response.json())
-      .then((responseJson) => {
-        this.setState({tracts:responseJson});
-      });
+    this.fetchResultsForMarkers(this.state.markers)
   }
 
   deleteMarker(marker) {
@@ -61,17 +78,7 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
-    fetch(`http://127.0.0.1:5000/`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.state.markers)
-    }).then(response => response.json())
-      .then((responseJson) => {
-        this.setState({tracts:responseJson});
-      });
+    this.fetchResultsForMarkers(this.state.markers)
   }
 
   onSuggestSelect(suggest) {
@@ -95,8 +102,8 @@ class App extends Component {
         </Popup>
       </Marker>
     ));
-    const Tracts = this.state.tracts.map(tract => (
-      <Polygon positions={JSON.parse(tract.tract.bounding_rect)} key={tract.tract.name}>
+    const Tracts = this.state.tracts.map((tract, index) => (
+      <Polygon positions={JSON.parse(tract.tract.bounding_rect)} key={index}>
         <Popup>
           <span>{tract.tract.name}</span>
         </Popup>
@@ -163,26 +170,16 @@ class Result extends Component {
     }
   }
 
-  getName(lat, lng) {
-      fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + GOOGLE_KEY)
-      .then(response => response.json())
-      .then((responseJson) => {
-        this.setState({
-          name: responseJson.results[0].address_components[2].long_name
-        });
-      });
-  }
-
-  componentWillMount() {
+  /*componentWillMount() {
     this.getName(this.props.center_lat, this.props.center_lng)
-  }
+  }*/
 
   render() {
     return (
       <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
-          <div className="tract-name">{this.state.name}</div>
+          <div className="tract-name">{this.props.name}</div>
           <div className="stats">
             <div className="stat">
               <div className="icon">
@@ -225,8 +222,10 @@ class Result extends Component {
 
 class ResultsBox extends Component {
   render() {
-    const Results = this.props.tracts.map(tract => (
+    const Results = this.props.tracts.map((tract, index) => (
       <Result
+        name={tract.tract.name}
+        key={index}
         center_lat={tract.tract.center_lat}
         center_lng={tract.tract.center_lng}
         img_src={tract.tract.img_src}
