@@ -21,20 +21,7 @@ class App extends Component {
       lng: -81.689281,
       zoom: 13,
       markers: [],
-      tracts: [
-        // {'tract' : {
-        //     'name': 'Tract 1',
-        //     'center_lat': '41.471166',
-        //     'center_lng': '-81.75266400000001',
-        //     'bounding_rect': [[41.467714, -81.759736], [41.467195, -81.758724], [41.465218, -81.758711], [41.465238, -81.758649], [41.466693, -81.754202], [41.467728, -81.751035], [41.468388, -81.749038], [41.468464, -81.748835], [41.469226, -81.746722], [41.47009, -81.745592], [41.470056, -81.751034], [41.47046, -81.748568], [41.472142, -81.748559], [41.473252, -81.748558], [41.477114, -81.748543], [41.477103, -81.750968], [41.477066, -81.754133], [41.47043, -81.754186], [41.470107, -81.75286], [41.469819, -81.752498], [41.46878, -81.755502], [41.467997, -81.758053], [41.467714, -81.759736]],
-        //     'img_src': 'https://s-media-cache-ak0.pinimg.com/736x/73/de/32/73de32f9e5a0db66ec7805bb7cb3f807.jpg',
-        //     'education_rank': '42',
-        //     'transportation_rank': '195',
-        //     'wellness_rank': '220',
-        //     'connectivity_rank': '421',
-        //   }
-        // }
-      ]
+      tracts: [],
     }
   }
 
@@ -47,7 +34,6 @@ class App extends Component {
   }
 
   addMarker(data) {
-    console.log(data);
     var oldMarkers = this.state.markers
     if(oldMarkers.length==0) {
       data.latlng.key = 0;
@@ -181,15 +167,17 @@ class Result extends Component {
       fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + GOOGLE_KEY)
       .then(response => response.json())
       .then((responseJson) => {
-        console.log(responseJson.results[0].address_components[2].long_name)
         this.setState({
           name: responseJson.results[0].address_components[2].long_name
         });
       });
   }
 
-  render() {
+  componentWillMount() {
     this.getName(this.props.center_lat, this.props.center_lng)
+  }
+
+  render() {
     return (
       <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
@@ -239,7 +227,6 @@ class ResultsBox extends Component {
   render() {
     const Results = this.props.tracts.map(tract => (
       <Result
-        name={tract.tract.name}
         center_lat={tract.tract.center_lat}
         center_lng={tract.tract.center_lng}
         img_src={tract.tract.img_src}
