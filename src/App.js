@@ -33,18 +33,6 @@ class App extends Component {
     });
   }
 
-  getName(lat, lng, index) {
-      fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + GOOGLE_KEY)
-      .then(response => response.json())
-      .then((responseJson) => {
-        let tracts = this.state.tracts
-        tracts[index].tract.name = responseJson.results[0].address_components[2].long_name
-        this.setState({
-          tracts: tracts
-        });
-      });
-  }
-
   fetchResultsForMarkers(markers) {
     fetch(`http://127.0.0.1:5000/`, {
       method: 'POST',
@@ -56,7 +44,6 @@ class App extends Component {
     }).then(response => response.json())
       .then((responseJson) => {
         this.setState({tracts:responseJson});
-        this.state.tracts.map((tract, index) => this.getName(tract.tract.center_lat, tract.tract.center_lng, index))
       });
   }
 
@@ -169,10 +156,6 @@ class Result extends Component {
       return 'Poor'
     }
   }
-
-  /*componentWillMount() {
-    this.getName(this.props.center_lat, this.props.center_lng)
-  }*/
 
   render() {
     return (
