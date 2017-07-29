@@ -56,6 +56,7 @@ class App extends Component {
     }
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
+    this.context.mixpanel.track('Marker Added.');
     this.fetchResultsForMarkers(this.state.markers)
   }
 
@@ -65,6 +66,7 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
+    this.context.mixpanel.track('Marker Deleted.');
     this.fetchResultsForMarkers(this.state.markers)
   }
 
@@ -117,6 +119,9 @@ class App extends Component {
     )
   }
 }
+App.contextTypes = {
+    mixpanel: React.PropTypes.object.isRequired
+};
 
 class SearchBox extends Component {
   render() {
@@ -236,6 +241,5 @@ class ResultsBox extends Component {
     );
   }
 }
-
 
 export default App;
