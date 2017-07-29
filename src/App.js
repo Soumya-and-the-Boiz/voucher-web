@@ -174,16 +174,14 @@ class Result extends Component {
     }
   }
 
-  resultClicked() {
-    this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng);
-    this.context.mixpanel.track('Result Clicked', {
-      'tract_id': this.props.tract_id,
-    });
-  }
-
   render() {
     return (
-      <div className="result" onClick={this.resultClicked()}>
+      <div className="result" onClick={()=>{
+        this.props.zoomer(this.props.center_lat, this.props.center_lng);
+        this.context.mixpanel.track('Result Clicked', {
+          'tract_id': this.props.tract_id,
+        });
+      } }>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
