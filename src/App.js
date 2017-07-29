@@ -147,16 +147,16 @@ class Result extends Component {
   scoreToRating(score) {
     var range = Math.floor(Number(score) / 100)
     if (range == 0) {
-      return 'Great'
+      return 'Excellent'
     }
     else if (range == 1) {
       return 'Good'
     }
     else if (range == 2) {
-      return 'Fair'
+      return 'Ok'
     }
     else {
-      return 'Poor'
+      return 'Low'
     }
   }
 
