@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import { MAPBOX_KEY } from "./mapboxkey.js";
-import { GOOGLE_KEY } from "./googlekey.js";
+import { CLICKY_KEY } from "./clickykey.js";
 import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
@@ -98,6 +98,9 @@ class App extends Component {
     ));
     return (
       <div className="app-root">
+        <script src="//static.getclicky.com/js" type="text/javascript"></script>
+        <script type="text/javascript">clicky.init({CLICKY_KEY}});</script>
+        <noscript><p><img alt="Clicky" width="1" height="1" src={"//in.getclicky.com/" + CLICKY_KEY + "ns.gif"} /></p></noscript>
         <Map className="map" onClick={this.addMarker.bind(this)} center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
