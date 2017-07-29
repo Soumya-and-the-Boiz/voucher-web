@@ -174,9 +174,16 @@ class Result extends Component {
     }
   }
 
+  resultClicked() {
+    this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng);
+    this.context.mixpanel.track('Result Clicked', {
+      'tract_id': this.props.tract_id,
+    });
+  }
+
   render() {
     return (
-      <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
+      <div className="result" onClick={this.resultClicked()}>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
@@ -219,12 +226,16 @@ class Result extends Component {
     )
   }
 }
+Result.contextTypes = {
+    mixpanel: React.PropTypes.object.isRequired
+};
 
 class ResultsBox extends Component {
   render() {
     const Results = this.props.tracts.map((tract, index) => (
       <Result
         name={tract.tract.name}
+        tract_id={tract.tract.tract_id}
         key={index}
         center_lat={tract.tract.center_lat}
         center_lng={tract.tract.center_lng}
