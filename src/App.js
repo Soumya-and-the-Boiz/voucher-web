@@ -101,7 +101,14 @@ class App extends Component {
       </Marker>
     ));
     const Tracts = this.state.tracts.map((tract, index) => (
-      <Polygon positions={JSON.parse(tract.tract.bounding_rect)} key={index}>
+      <Polygon positions={JSON.parse(tract.tract.bounding_rect)}
+               key={index}
+               onClick={() => {
+                   this.context.mixpanel.track('Polygon Clicked', {
+                     'tract_id': tract.tract.tract_id,
+                   });
+                 }
+               }>
         <Popup>
           <span>{tract.tract.name}</span>
         </Popup>
