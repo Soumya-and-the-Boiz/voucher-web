@@ -56,7 +56,7 @@ class App extends Component {
     }
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
-    this.context.mixpanel.track('Marker Added.', {
+    this.context.mixpanel.track('Marker Added', {
       'latitude': data.latlng.lat,
       'longitude': data.latlng.lng,
     });
@@ -69,7 +69,7 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
-    this.context.mixpanel.track('Marker Deleted.', {
+    this.context.mixpanel.track('Marker Deleted', {
       'latitude': marker.lat,
       'longitude': marker.lng,
     });
@@ -83,6 +83,9 @@ class App extends Component {
         lng: suggest.location.lng
       }
     }
+    this.context.mixpanel.track('Suggestion Accepted', {
+      'label': suggest.label,
+    });
     this.addMarker(data);
     this.zoomToCoordinates(suggest.location.lat, suggest.location.lng)
   }
