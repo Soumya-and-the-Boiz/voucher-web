@@ -89,9 +89,25 @@
   min-height: 24px;
   padding: 12px 15px 6px 53px;
   border-bottom: 1px solid #e6e6e6;
+  color: #8C8C8C;
+  font-size: 12px;
+  line-height: 24px;
 }
 
-.geosuggest__item:hover, .result:hover {
+.geosuggest__item .main-text {
+  color: #333;
+  font-size: 13px;
+  margin-right: 4px;
+}
+
+.geosuggest__item .search-item {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+
+.geosuggest__item:hover, .result:hover, .geosuggest__item--active {
   background-color: #FAFAFA;
 }
 

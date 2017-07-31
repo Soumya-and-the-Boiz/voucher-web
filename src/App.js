@@ -79,6 +79,46 @@ class App extends Component {
     this.zoomToCoordinates(suggest.location.lat, suggest.location.lng)
   }
 
+  getSuggestLabel(suggest) {
+    const mainText = suggest.structured_formatting.main_text;
+    const secondaryText = suggest.structured_formatting.secondary_text;
+    if (!suggest.matched_substrings) {
+      return (
+        <div className="search-item">
+          <span className="main-text">{mainText}</span>
+          <span className="secondary-text">{secondaryText}</span>
+        </div>
+      );
+    }
+
+    const start = suggest.matched_substrings[0].offset,
+          length = suggest.matched_substrings[0].length,
+          end = start + length,
+          boldPart = mainText.substring(start, end);
+
+    let pre = '', post = '';
+
+    if (start > 0) {
+      pre = mainText.slice(0, start);
+    }
+    if (end < mainText.length) {
+      post = mainText.slice(end);
+    }
+
+    return (
+      <div className="search-item">
+        <span className="main-text">
+          {pre}
+          <b className='geosuggest__item__matched-text' key={mainText}>
+            {boldPart}
+          </b>
+          {post}
+        </span>
+        <span className="secondary-text">{secondaryText}</span>
+      </div>
+    );
+  }
+
   render () {
     const position = [this.state.lat, this.state.lng]
     const mapboxURL = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + MAPBOX_KEY
@@ -110,7 +150,7 @@ class App extends Component {
           {Tracts}
         </Map>
         <div className="panels">
-          <SearchBox onSuggestSelect={this.onSuggestSelect.bind(this)}/>
+          <SearchBox onSuggestSelect={this.onSuggestSelect.bind(this)} getSuggestLabel={this.getSuggestLabel}/>
           <ResultsBox tracts={this.state.tracts} zoomer= {this.zoomToCoordinates.bind(this)}/>
         </div>
       </div>
@@ -126,7 +166,9 @@ class SearchBox extends Component {
           <img src={magnification}/>
         </div>
         <Geosuggest
+          highlightMatch={false}
           onSuggestSelect={this.props.onSuggestSelect}
+          getSuggestLabel={this.props.getSuggestLabel}
           placeholder="What areas do you like?"
           location={new google.maps.LatLng(41.498321, -81.696316)}
           radius="20"
