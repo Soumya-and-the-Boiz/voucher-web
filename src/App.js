@@ -8,6 +8,7 @@ import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
 import magnification from '../assets/Magnification.png';
+import pin from '../assets/Pin.svg';
 import connectivity from '../assets/Connectivity.png';
 import education from '../assets/Education.png';
 import transportation from '../assets/Transportation.png';
@@ -107,6 +108,9 @@ class App extends Component {
 
     return (
       <div className="search-item">
+        <div className="icon-container pin">
+          <img src={pin}/>
+        </div>
         <span className="main-text">
           {pre}
           <b className='geosuggest__item__matched-text' key={mainText}>
@@ -162,7 +166,7 @@ class SearchBox extends Component {
   render() {
     return (
       <div className="search">
-        <div className="icon-container">
+        <div className="icon-container magnify">
           <img src={magnification}/>
         </div>
         <Geosuggest

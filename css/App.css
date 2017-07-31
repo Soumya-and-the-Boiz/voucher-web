@@ -48,6 +48,18 @@
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.search .icon-container.pin {
+  padding: 13px 19px 0px 19px;
+}
+
+.search .icon-container.pin img {
+  width: 12px;
+}
+
+.search .icon-container.magnify {
+  padding-top: 17px;
   padding: 17px 15px 10px 15px;
 }
 
@@ -92,6 +104,7 @@
   color: #8C8C8C;
   font-size: 12px;
   line-height: 24px;
+  position: relative;
 }
 
 .geosuggest__item .main-text {

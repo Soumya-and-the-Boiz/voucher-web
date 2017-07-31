@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1047px" height="1368px" viewBox="0 0 1047 1368" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Layer-1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="BlackPin" fill-rule="nonzero">
+            <g id="Page-1">
+                <g id="orange-map-pin">
+                    <g id="Layer-1">
+                        <path d="M74.62601,774.19702 C32.41,701.06 -1.81799,616.26202 0.357,506.26501 C2.482,398.79199 33.565,312.58099 78.38699,242.09299 C152.10599,126.15799 275.58801,31.104 441.271,6.12399 C576.737,-14.3 703.74597,20.20599 793.81403,72.87199 C867.41004,115.91 924.41004,173.39899 967.72998,241.15201 C1012.94995,311.86801 1044.08997,395.41199 1046.69995,504.38397 C1048.04004,560.21399 1038.90003,611.91601 1026.02002,654.802 C1012.98999,698.211 992.03003,734.49701 973.38001,773.25598 C936.96997,848.91498 642.297658,1367.33184 523.544526,1367.33184 C403.586309,1367.33184 95.73901,810.77399 74.62601,774.19702 Z" id="svg_2" fill="#B2B2B2"></path>
+                        <circle id="svg_4" fill="#FFFFFF" cx="523.546" cy="505.047" r="183.333"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
