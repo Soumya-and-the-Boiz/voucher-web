@@ -50,7 +50,7 @@ class App extends Component {
 
   addMarker(data) {
     var oldMarkers = this.state.markers
-    if(oldMarkers.length==0) {
+    if(oldMarkers.length===0) {
       data.latlng.key = 0;
     } else {
       data.latlng.key = oldMarkers[oldMarkers.length-1].key+1;
@@ -138,7 +138,7 @@ class App extends Component {
     const position = [this.state.lat, this.state.lng]
     const mapboxURL = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + MAPBOX_KEY
     const Markers = this.state.markers.map(marker => (
-      <Marker position={[marker.lat, marker.lng]} key = {marker.key}>
+      <Marker position={[marker.lat, marker.lng]} key={marker.key}>
         <Popup>
           <button onClick={this.deleteMarker.bind(this, marker)} type="button">Delete</button>
         </Popup>
@@ -173,7 +173,7 @@ class App extends Component {
         </Map>
         <div className="panels">
           <SearchBox onSuggestSelect={this.onSuggestSelect.bind(this)} getSuggestLabel={this.getSuggestLabel}/>
-          <ResultsBox tracts={this.state.tracts} zoomer= {this.zoomToCoordinates.bind(this)}/>
+          <ResultsBox tracts={this.state.tracts} zoomer={this.zoomToCoordinates.bind(this)}/>
         </div>
       </div>
     )
@@ -213,13 +213,13 @@ class Result extends Component {
 
   scoreToRating(score) {
     var range = Math.floor(Number(score) / 100)
-    if (range == 0) {
+    if (range === 0) {
       return 'Great'
     }
-    else if (range == 1) {
+    else if (range === 1) {
       return 'Good'
     }
-    else if (range == 2) {
+    else if (range === 2) {
       return 'Ok'
     }
     else {
