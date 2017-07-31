@@ -120,7 +120,7 @@ class App extends Component {
     return (
       <div className="search-item">
         <div className="icon-container pin">
-          <img src={pin}/>
+          <img alt="Pin" rc={pin}/>
         </div>
         <span className="main-text">
           {pre}
@@ -188,7 +188,7 @@ class SearchBox extends Component {
     return (
       <div className="search">
         <div className="icon-container magnify">
-          <img src={magnification}/>
+          <img alt="Magnify" src={magnification}/>
         </div>
         <Geosuggest
           highlightMatch={false}
@@ -235,13 +235,13 @@ class Result extends Component {
           'tract_id': this.props.tract_id,
         });
       } }>
-        <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
+        <img className="big-picture" width='80' height='59' alt="Neighborhood" src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
           <div className="stats">
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={transportation}/>
+                <img className="icon-image" alt="Transportation" src={transportation}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.transportation)}
@@ -249,7 +249,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={education}/>
+                <img className="icon-image" alt="Education" src={education}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.education)}
@@ -257,7 +257,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={wellness}/>
+                <img className="icon-image" alt="Wellness" src={wellness}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.wellness)}
@@ -265,7 +265,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={connectivity}/>
+                <img className="icon-image" alt="Connectivity" src={connectivity}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.connectivity)}
