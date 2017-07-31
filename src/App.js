@@ -57,6 +57,10 @@ class App extends Component {
     }
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
+    this.context.mixpanel.track('Marker Added', {
+      'latitude': data.latlng.lat,
+      'longitude': data.latlng.lng,
+    });
     this.fetchResultsForMarkers(this.state.markers)
   }
 
@@ -66,6 +70,10 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
+    this.context.mixpanel.track('Marker Deleted', {
+      'latitude': marker.lat,
+      'longitude': marker.lng,
+    });
     this.fetchResultsForMarkers(this.state.markers)
   }
 
@@ -76,6 +84,9 @@ class App extends Component {
         lng: suggest.location.lng
       }
     }
+    this.context.mixpanel.track('Suggestion Accepted', {
+      'label': suggest.label,
+    });
     this.addMarker(data);
     this.zoomToCoordinates(suggest.location.lat, suggest.location.lng)
   }
@@ -134,7 +145,14 @@ class App extends Component {
       </Marker>
     ));
     const Tracts = this.state.tracts.map((tract, index) => (
-      <Polygon positions={JSON.parse(tract.tract.bounding_rect)} key={index}>
+      <Polygon positions={JSON.parse(tract.tract.bounding_rect)}
+               key={index}
+               onClick={() => {
+                   this.context.mixpanel.track('Polygon Clicked', {
+                     'tract_id': tract.tract.tract_id,
+                   });
+                 }
+               }>
         <Popup>
           <span>{tract.tract.name}</span>
         </Popup>
@@ -161,6 +179,9 @@ class App extends Component {
     )
   }
 }
+App.contextTypes = {
+    mixpanel: React.PropTypes.object.isRequired
+};
 
 class SearchBox extends Component {
   render() {
@@ -208,7 +229,12 @@ class Result extends Component {
 
   render() {
     return (
-      <div className="result" onClick={this.props.zoomer.bind(this, this.props.center_lat, this.props.center_lng)}>
+      <div className="result" onClick={()=>{
+        this.props.zoomer(this.props.center_lat, this.props.center_lng);
+        this.context.mixpanel.track('Result Clicked', {
+          'tract_id': this.props.tract_id,
+        });
+      } }>
         <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
@@ -251,12 +277,16 @@ class Result extends Component {
     )
   }
 }
+Result.contextTypes = {
+    mixpanel: React.PropTypes.object.isRequired
+};
 
 class ResultsBox extends Component {
   render() {
     const Results = this.props.tracts.map((tract, index) => (
       <Result
         name={tract.tract.name}
+        tract_id={tract.tract.tract_id}
         key={index}
         center_lat={tract.tract.center_lat}
         center_lng={tract.tract.center_lng}
@@ -282,6 +312,5 @@ class ResultsBox extends Component {
     );
   }
 }
-
 
 export default App;
