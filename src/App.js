@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import { MAPBOX_KEY } from "./mapboxkey.js";
-import { CLICKY_KEY } from "./clickykey.js";
+import { BACKEND_IP, CLICKY_KEY, GOOGLE_KEY, MAPBOX_KEY } from "./config.js";
 import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
@@ -35,7 +34,7 @@ class App extends Component {
   }
 
   fetchResultsForMarkers(markers) {
-    fetch(`http://127.0.0.1:5000/`, {
+    fetch(`http://${BACKEND_IP}:5000/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
