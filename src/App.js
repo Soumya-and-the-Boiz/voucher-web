@@ -33,14 +33,14 @@ class App extends Component {
     });
   }
 
-  fetchResultsForMarkers(operation, changedMarker, oldMarkers) {
+  fetchResultsForMarkers(operation, changedMarker, markers) {
     fetch(`http://${BACKEND_IP}:5000/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({operation: operation, changedMarker: changedMarker, oldMarkers: oldMarkers})
+      body: JSON.stringify({operation: operation, changedMarker: changedMarker, markers: markers})
     }).then(response => response.json())
       .then((responseJson) => {
         this.setState({tracts:responseJson});
