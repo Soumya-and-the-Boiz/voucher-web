@@ -33,14 +33,14 @@ class App extends Component {
     });
   }
 
-  fetchResultsForMarkers(markers) {
+  fetchResultsForMarkers(operation, changedMarker, oldMarkers) {
     fetch(`http://${BACKEND_IP}:5000/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(markers)
+      body: JSON.stringify({operation: operation, changedMarker: changedMarker, oldMarkers: oldMarkers})
     }).then(response => response.json())
       .then((responseJson) => {
         this.setState({tracts:responseJson});
@@ -54,26 +54,26 @@ class App extends Component {
     } else {
       data.latlng.key = oldMarkers[oldMarkers.length-1].key+1;
     }
-    oldMarkers.push(data.latlng)
-    this.setState({markers: oldMarkers})
     this.context.mixpanel.track('Marker Added', {
       'latitude': data.latlng.lat,
       'longitude': data.latlng.lng,
     });
-    this.fetchResultsForMarkers(this.state.markers)
+    oldMarkers.push(data.latlng)
+    this.setState({markers: oldMarkers})
+    this.fetchResultsForMarkers("add", data.latlng, this.state.markers)
   }
 
   deleteMarker(marker) {
     const newMarkers = this.state.markers;
-    if (newMarkers.indexOf(marker) > -1) {
-      newMarkers.splice(newMarkers.indexOf(marker), 1);
-      this.setState({markers: newMarkers})
-    }
     this.context.mixpanel.track('Marker Deleted', {
       'latitude': marker.lat,
       'longitude': marker.lng,
     });
-    this.fetchResultsForMarkers(this.state.markers)
+    if (newMarkers.indexOf(marker) > -1) {
+      newMarkers.splice(newMarkers.indexOf(marker), 1);
+      this.setState({markers: newMarkers})
+    }
+    this.fetchResultsForMarkers("remove", marker, this.state.markers)
   }
 
   onSuggestSelect(suggest) {
