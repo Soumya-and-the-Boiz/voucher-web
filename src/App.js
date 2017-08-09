@@ -85,7 +85,7 @@ class App extends Component {
       }
     }
     this.context.mixpanel.track('Suggestion Accepted', {
-      'label': suggest.label,
+      'label': suggest.description,
     });
     this.addMarker(data);
     this.zoomToCoordinates(suggest.location.lat, suggest.location.lng)
