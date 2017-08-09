@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import '../css/index.css';
 
-import { MIXPANEL_KEY } from "./mixpanelkey.js";
+import { MIXPANEL_KEY } from "./config.js";
 import mixpanel from 'mixpanel-browser';
 import MixpanelProvider from 'react-mixpanel';
 

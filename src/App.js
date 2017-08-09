@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
-import { MAPBOX_KEY } from "./mapboxkey.js";
-import { CLICKY_KEY } from "./clickykey.js";
+import { BACKEND_IP, CLICKY_KEY, GOOGLE_KEY, MAPBOX_KEY } from "./config.js";
 import '../css/App.css';
 import Geosuggest from 'react-geosuggest';
 
@@ -34,14 +33,14 @@ class App extends Component {
     });
   }
 
-  fetchResultsForMarkers(markers) {
-    fetch(`http://127.0.0.1:5000/`, {
+  fetchResultsForMarkers(operation, changedMarker, markers) {
+    fetch(`http://${BACKEND_IP}:5000/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(markers)
+      body: JSON.stringify({operation: operation, changedMarker: changedMarker, markers: markers})
     }).then(response => response.json())
       .then((responseJson) => {
         this.setState({tracts:responseJson});
@@ -55,26 +54,26 @@ class App extends Component {
     } else {
       data.latlng.key = oldMarkers[oldMarkers.length-1].key+1;
     }
-    oldMarkers.push(data.latlng)
-    this.setState({markers: oldMarkers})
     this.context.mixpanel.track('Marker Added', {
       'latitude': data.latlng.lat,
       'longitude': data.latlng.lng,
     });
-    this.fetchResultsForMarkers(this.state.markers)
+    oldMarkers.push(data.latlng)
+    this.setState({markers: oldMarkers})
+    this.fetchResultsForMarkers("add", data.latlng, this.state.markers)
   }
 
   deleteMarker(marker) {
     const newMarkers = this.state.markers;
-    if (newMarkers.indexOf(marker) > -1) {
-      newMarkers.splice(newMarkers.indexOf(marker), 1);
-      this.setState({markers: newMarkers})
-    }
     this.context.mixpanel.track('Marker Deleted', {
       'latitude': marker.lat,
       'longitude': marker.lng,
     });
-    this.fetchResultsForMarkers(this.state.markers)
+    if (newMarkers.indexOf(marker) > -1) {
+      newMarkers.splice(newMarkers.indexOf(marker), 1);
+      this.setState({markers: newMarkers})
+    }
+    this.fetchResultsForMarkers("remove", marker, this.state.markers)
   }
 
   onSuggestSelect(suggest) {
@@ -120,7 +119,7 @@ class App extends Component {
     return (
       <div className="search-item">
         <div className="icon-container pin">
-          <img src={pin}/>
+          <img alt="Pin" rc={pin}/>
         </div>
         <span className="main-text">
           {pre}
@@ -188,7 +187,7 @@ class SearchBox extends Component {
     return (
       <div className="search">
         <div className="icon-container magnify">
-          <img src={magnification}/>
+          <img alt="Magnify" src={magnification}/>
         </div>
         <Geosuggest
           highlightMatch={false}
@@ -235,13 +234,13 @@ class Result extends Component {
           'tract_id': this.props.tract_id,
         });
       } }>
-        <img className="big-picture" width='80' height='59' src={this.props.img_src}/>
+        <img className="big-picture" width='80' height='59' alt="Neighborhood" src={this.props.img_src}/>
         <div className="description">
           <div className="tract-name">{this.props.name}</div>
           <div className="stats">
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={transportation}/>
+                <img className="icon-image" alt="Transportation" src={transportation}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.transportation)}
@@ -249,7 +248,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={education}/>
+                <img className="icon-image" alt="Education" src={education}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.education)}
@@ -257,7 +256,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={wellness}/>
+                <img className="icon-image" alt="Wellness" src={wellness}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.wellness)}
@@ -265,7 +264,7 @@ class Result extends Component {
             </div>
             <div className="stat">
               <div className="icon">
-                <img className="icon-image" src={connectivity}/>
+                <img className="icon-image" alt="Connectivity" src={connectivity}/>
               </div>
               <div className="ranking">
                 {this.scoreToRating(this.props.connectivity)}
