@@ -105,9 +105,9 @@ class App extends Component {
 
   updateRanking (newValue) {
 		this.setState({
-			selectValue: newValue
+			selectValue: newValue.value
 		});
-    this.fetchResultsForMarkers("ranking", null, this.state.markers, this.state.selectValue)
+    this.fetchResultsForMarkers("ranking", null, this.state.markers, newValue.value)
 	}
 
   getSuggestLabel(suggest) {
