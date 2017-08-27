@@ -9,7 +9,8 @@
     "react-dom": "^15.4.2",
     "react-geosuggest": "^2.3.6",
     "react-leaflet": "^1.1.5",
-    "react-mixpanel": "0.0.8"
+    "react-mixpanel": "0.0.8",
+    "react-select": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

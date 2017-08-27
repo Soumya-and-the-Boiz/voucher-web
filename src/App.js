@@ -1,6 +1,7 @@
 /* global google */
 
 import React, { Component } from 'react';
+import Select from 'react-select';
 import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 import { BACKEND_IP, CLICKY_KEY, GOOGLE_KEY, MAPBOX_KEY } from "./config.js";
 import '../css/App.css';
@@ -13,6 +14,13 @@ import education from '../assets/Education.png';
 import transportation from '../assets/Transportation.png';
 import wellness from '../assets/Wellness.png';
 
+import 'react-select/dist/react-select.css';
+
+const options = [
+  { value: 'cmha', label: 'CMHA' },
+  { value: 'autoencoder', label: 'AutoEncoder' }
+];
+
 class App extends Component {
   constructor() {
     super();
@@ -22,6 +30,7 @@ class App extends Component {
       zoom: 13,
       markers: [],
       tracts: [],
+      selectValue: 'cmha',
     }
   }
 
@@ -33,14 +42,18 @@ class App extends Component {
     });
   }
 
-  fetchResultsForMarkers(operation, changedMarker, markers) {
+  fetchResultsForMarkers(operation, changedMarker, markers, rankingMethod) {
     fetch(`http://${BACKEND_IP}:5000/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({operation: operation, changedMarker: changedMarker, markers: markers})
+      body: JSON.stringify({operation: operation,
+                            changedMarker: changedMarker,
+                            markers: markers,
+                            rankingMethod: rankingMethod
+                          })
     }).then(response => response.json())
       .then((responseJson) => {
         this.setState({tracts:responseJson});
@@ -60,7 +73,7 @@ class App extends Component {
     });
     oldMarkers.push(data.latlng)
     this.setState({markers: oldMarkers})
-    this.fetchResultsForMarkers("add", data.latlng, this.state.markers)
+    this.fetchResultsForMarkers("add", data.latlng, this.state.markers, this.state.selectValue)
   }
 
   deleteMarker(marker) {
@@ -73,7 +86,7 @@ class App extends Component {
       newMarkers.splice(newMarkers.indexOf(marker), 1);
       this.setState({markers: newMarkers})
     }
-    this.fetchResultsForMarkers("remove", marker, this.state.markers)
+    this.fetchResultsForMarkers("remove", marker, this.state.markers, this.state.selectValue)
   }
 
   onSuggestSelect(suggest) {
@@ -89,6 +102,13 @@ class App extends Component {
     this.addMarker(data);
     this.zoomToCoordinates(suggest.location.lat, suggest.location.lng)
   }
+
+  updateRanking (newValue) {
+		this.setState({
+			selectValue: newValue
+		});
+    this.fetchResultsForMarkers("ranking", null, this.state.markers, this.state.selectValue)
+	}
 
   getSuggestLabel(suggest) {
     const mainText = suggest.structured_formatting.main_text;
@@ -173,6 +193,12 @@ class App extends Component {
         <div className="panels">
           <SearchBox onSuggestSelect={this.onSuggestSelect.bind(this)} getSuggestLabel={this.getSuggestLabel}/>
           <ResultsBox tracts={this.state.tracts} zoomer={this.zoomToCoordinates.bind(this)}/>
+          <Select
+            name="select-similarity"
+            value={this.state.selectValue}
+            options={options}
+            onChange={this.updateRanking.bind(this)}
+          />
         </div>
       </div>
     )

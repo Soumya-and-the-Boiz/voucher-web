@@ -119,7 +119,6 @@
   overflow-x: hidden;
 }
 
-
 .geosuggest__item:hover, .result:hover, .geosuggest__item--active {
   background-color: #FAFAFA;
 }
